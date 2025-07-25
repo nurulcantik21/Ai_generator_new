@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essay & Makalah Generator - Tema Abu-Abu</title>
+  <!-- Tailwind CSS CDN for utility-first styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts - Inter for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Base body styles with Inter font and light gray background */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6; /* Tailwind gray-100 */
+      transition: background-color 0.3s, color 0.3s; /* Smooth transition for dark mode */
+    }
+    /* Dark mode styles */
+    .dark-mode {
+      background-color: #1f2937; /* Tailwind gray-800 */
+      color: #e5e7eb; /* Tailwind gray-200 */
+    }
+    .dark-mode .bg-white {
+      background-color: #374151; /* Tailwind gray-700 */
+    }
+    .dark-mode input,
+    .dark-mode select {
+      background-color: #4b5563; /* Tailwind gray-600 */
+      color: #e5e7eb; /* Tailwind gray-200 */
+      border-color: #6b7280; /* Tailwind gray-500 */
+    }
+    .dark-mode .text-gray-700 {
+      color: #d1d5db; /* Tailwind gray-300 */
+    }
+    .dark-mode .text-gray-800 {
+        color: #f9fafb; /* Tailwind gray-50 */
+    }
+    .dark-mode .placeholder-gray-400::placeholder {
+        color: #9ca3af; /* Tailwind gray-400 */
+    }
+    /* Custom button styles for gray theme */
+    .button-gray {
+      background-color: #4b5563; /* Tailwind gray-600 */
+      color: white;
+    }
+    .button-gray:hover {
+      background-color: #6b7280; /* Tailwind gray-500 */
+    }
+    .button-gray:disabled {
+        background-color: #9ca3af; /* Tailwind gray-400 */
+        cursor: not-allowed;
+    }
+    /* Loading spinner animation */
+    .loading-spinner {
+      border: 4px solid rgba(209, 213, 219, 0.3); /* gray-300 with opacity */
+      border-top: 4px solid #4b5563; /* gray-600 */
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    .dark-mode .loading-spinner {
+        border-top: 4px solid #9ca3af; /* gray-400 */
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <div class="container mx-auto max-w-4xl p-4">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-700 flex items-center">
+        <!-- Logo SVG: Pen and Paper -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 mr-2 text-gray-600 dark:text-gray-300">
+          <path d="M19.5 22.5a.75.75 0 0 0 .75-.75v-2.25a.75.75 0 0 0-1.5 0v2.25c0 .414.336.75.75.75ZM11.47 2.47a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06L12.06 12.06a.75.75 0 0 1-1.06 0l-3.75-3.75a.75.75 0 0 1 0-1.06l4.24-4.24Zm2.12 2.12L10.94 7.06l3.53 3.53 2.12-2.12-3.53-3.53ZM18 12.75a.75.75 0 0 0-1.5 0v5.25a.75.75 0 0 0 1.5 0v-5.25ZM12 12.75a.75.75 0 0 0-1.5 0v5.25a.75.75 0 0 0 1.5 0v-5.25ZM6 12.75a.75.75 0 0 0-1.5 0v5.25a.75.75 0 0 0 1.5 0v-5.25Z" />
+          <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm0 18a8.25 8.25 0 1 0 0-16.5 8.25 8.25 0 0 0 0 16.5Z" clip-rule="evenodd" />
+        </svg>
+        Essay & Makalah Generator
+      </h1>
+      <!-- Dark/Light Mode Toggle Button -->
+      <button onclick="toggleMode()" class="px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors">
+        🌙 / 🔆
+      </button>
+    </div>
+
+    <!-- Input Controls Section -->
+    <div class="bg-white p-6 rounded-xl shadow mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Topic Input -->
+        <div>
+          <label for="topic" class="block text-sm font-bold mb-1 text-gray-700">Topik:</label>
+          <input type="text" id="topic" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" placeholder="Contoh: Peran AI dalam Pendidikan">
+        </div>
+        <!-- Category Select -->
+        <div>
+          <label for="category" class="block text-sm font-bold mb-1 text-gray-700">Kategori:</label>
+          <select id="category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>Teknologi</option>
+            <option>Sosial</option>
+            <option>Pendidikan</option>
+            <option>Ekonomi</option>
+            <option>Hukum</option>
+            <option>Kesehatan</option>
+            <option>Lingkungan</option>
+            <option>Seni & Budaya</option>
+          </select>
+        </div>
+        <!-- Writing Style Select -->
+        <div>
+          <label for="style" class="block text-sm font-bold mb-1 text-gray-700">Gaya Penulisan:</label>
+          <select id="style" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="ilmiah">Ilmiah</option>
+            <option value="argumentatif">Argumentatif</option>
+            <option value="eksploratif">Eksploratif</option>
+            <option value="naratif">Naratif</option>
+            <option value="deskriptif">Deskriptif</option>
+          </select>
+        </div>
+        <!-- Language Select -->
+        <div>
+          <label for="lang" class="block text-sm font-bold mb-1 text-gray-700">Bahasa:</label>
+          <select id="lang" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="id">Bahasa Indonesia</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <!-- Word Count Input -->
+        <div>
+          <label for="words" class="block text-sm font-bold mb-1 text-gray-700">Jumlah Kata:</label>
+          <input type="number" id="words" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="500" min="100" step="100">
+        </div>
+        <!-- Generate Button -->
+        <div class="flex items-end">
+          <button onclick="generateEssay()" id="generateButton" class="button-gray w-full font-bold py-2 px-4 rounded-lg transition-colors">
+            📝 Buatkan Makalah
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Output Section -->
+    <div class="relative">
+        <div id="output" class="bg-white p-6 rounded-xl shadow whitespace-pre-line min-h-[200px] text-gray-800">
+            <p class="text-gray-400">Hasil makalah akan tampil di sini...</p>
+        </div>
+        <!-- Copy Button - Hidden by default, shown when content is generated -->
+        <button id="copyButton" onclick="copyToClipboard()" class="absolute top-3 right-3 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 hidden">
+            <!-- Clipboard Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+                <path d="M4 1.5H3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-11a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h1v-1z"/>
+                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+            </svg>
+        </button>
+        <!-- Copy Feedback Message -->
+        <div id="copyFeedback" class="absolute bottom-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md hidden">Tersalin!</div>
+    </div>
+  </div>
+
+  <script>
+    // --- Dark Mode Toggle Function ---
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // --- Copy to Clipboard Function (Modern Clipboard API) ---
+    async function copyToClipboard() {
+        const outputDiv = document.getElementById("output");
+        const textToCopy = outputDiv.innerText; // Get the plain text content
+
+        try {
+            // Use the modern Clipboard API to write text
+            await navigator.clipboard.writeText(textToCopy);
+            const feedback = document.getElementById('copyFeedback');
+            feedback.classList.remove('hidden'); // Show "Tersalin!" feedback
+            setTimeout(() => {
+                feedback.classList.add('hidden'); // Hide feedback after 2 seconds
+            }, 2000);
+        } catch (err) {
+            console.error('Gagal menyalin teks:', err);
+            // Optionally, provide user feedback that copying failed, e.g., a temporary message in outputDiv
+            const outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = `<p class="text-red-500 font-semibold">Gagal menyalin teks. Pastikan browser Anda mendukung fitur ini atau coba lagi.</p>`;
+        }
+    }
+
+    // --- Essay Generation Function ---
+    async function generateEssay() {
+      // Get input values from the form
+      const topic = document.getElementById("topic").value.trim();
+      const category = document.getElementById("category").value;
+      const style = document.getElementById("style").value;
+      const lang = document.getElementById("lang").value;
+      const words = parseInt(document.getElementById("words").value);
+      
+      // Get references to output and buttons
+      const outputDiv = document.getElementById("output");
+      const generateButton = document.getElementById("generateButton");
+      const copyButton = document.getElementById("copyButton");
+
+      // Basic input validation: Topic cannot be empty
+      if (!topic) {
+        outputDiv.innerHTML = '<p class="text-red-500 font-semibold">❌ Topik tidak boleh kosong!</p>';
+        copyButton.classList.add('hidden'); // Hide copy button if there's an error
+        return; // Stop execution
+      }
+
+      // --- UI updates for loading state ---
+      outputDiv.innerHTML = `<div class="text-center py-6">
+        <div class="loading-spinner"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-400">Sedang membuat makalah, mohon tunggu...</p>
+      </div>`;
+      generateButton.disabled = true; // Disable button to prevent multiple submissions
+      copyButton.classList.add('hidden'); // Hide copy button during generation
+
+      // --- Construct the prompt for the AI based on user inputs ---
+      const prompt = `Tuliskan sebuah ${lang === 'id' ? 'makalah' : 'essay'} ${style} dalam ${lang === 'id' ? 'Bahasa Indonesia' : 'English'} dengan topik '${topic}', kategori '${category}', dan panjang sekitar ${words} kata. Struktur tulisan meliputi: Pendahuluan, Latar Belakang, Rumusan Masalah, Tujuan, Isi Pembahasan yang mendalam, Kesimpulan, dan Daftar Pustaka. Pastikan formatnya jelas dengan judul dan sub-judul yang tebal.`;
+
+      // Payload for the Gemini API request
+      const payload = {
+        contents: [{ role: "user", parts: [{ text: prompt }] }]
+      };
+
+      // --- API Call Configuration ---
+      // The API key is left empty as the environment will provide it securely.
+      // In a real-world scenario, for production, this API call should be proxied through a backend server
+      // to prevent exposing the API key directly in client-side code.
+      const apiKey = ""; 
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+      try {
+        // Fetch request to the Gemini API
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // Check if the HTTP response was successful
+        if (!response.ok) {
+            const errorData = await response.json();
+            // Throw an error with a more descriptive message if available
+            throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const result = await response.json();
+        
+        // Safely access the generated text from the response structure
+        const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (text) {
+            outputDiv.innerText = text; // Display the generated text
+            copyButton.classList.remove('hidden'); // Show copy button
+        } else {
+            // Handle cases where generation might be blocked or empty (e.g., safety filters)
+            const blockReason = result?.promptFeedback?.blockReason;
+            const finishReason = result?.candidates?.[0]?.finishReason;
+            let errorMessage = "Gagal menghasilkan makalah.";
+            if (blockReason) {
+                errorMessage += ` Alasan: Konten diblokir (${blockReason}).`;
+            } else if (finishReason && finishReason !== 'STOP') {
+                errorMessage += ` Alasan: Proses dihentikan (${finishReason}).`;
+            }
+            outputDiv.innerHTML = `<p class="text-orange-500 font-semibold">⚠ ${errorMessage}</p>`;
+        }
+
+      } catch (error) {
+        // Catch any network errors or errors thrown from the response handling
+        console.error("API Error:", error);
+        outputDiv.innerHTML = `<p class="text-red-500 font-semibold">❌ Terjadi kesalahan saat menghubungi server: ${error.message}</p>`;
+      } finally {
+        // Re-enable the generate button regardless of success or failure
+        generateButton.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
